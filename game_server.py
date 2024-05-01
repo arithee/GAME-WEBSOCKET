@@ -1,5 +1,5 @@
 import socket
-import random 
+import random
 
 host = "localhost"
 port = 7777
@@ -16,32 +16,28 @@ s.bind((host, port))
 s.listen(5)
 
 print(f"server is listening in port {port}")
-guessme = 0
-conn = None
+
 while True:
-    if conn is None:
-        print("waiting for connection..")
-        conn, addr = s.accept()
-        guessme = generate_random_int(1,100)
-        print(f"new client: {addr[0]}")
-        # cheat_str = f"==== number to guess is {guessme} \n" + banner 
-        # conn.sendall(cheat_str.encode())
-        conn.sendall(banner.encode())
-    else:
+    conn, addr = s.accept()
+    guessme = generate_random_int(1,100)
+    print(f"new client: {addr[0]}")
+    conn.sendall(banner.encode())
+
+    while True:
         client_input = conn.recv(1024)
         guess = int(client_input.decode().strip())
         print(f"User guess attempt: {guess}")
         if guess == guessme:
-            conn.sendall(b"Correct Answer!")
-            conn.close()
-            conn = None
-            continue
+            conn.sendall(b"Correct Answer! Would you like to play again? (Y/N): ")
+            play_again = conn.recv(1024).decode().strip().lower()
+            if play_again != "Y":
+                conn.sendall(b"Goodbye!")
+                conn.close()
+                break
+            else:
+                guessme = generate_random_int(1,100)
+                conn.sendall(banner.encode())
         elif guess > guessme:
-            conn.sendall(b"Guess Lower!\nEnter guess: ")
-            continue
+            conn.sendall(b"Guess Lower!\nEnter your guess: ")
         elif guess < guessme:
-            conn.sendall(b"Guess Higher!\nEnter guess:")
-            continue
-
-
-
+            conn.sendall(b"Guess Higher!\nEnter your guess:")
