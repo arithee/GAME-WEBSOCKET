@@ -4,11 +4,25 @@ import random
 host = "localhost"
 port = 7777
 banner = """
-== Guessing Game v1.0 ==
+== Guessing Game Drill - IT6 ==
+Select the difficulty level:
+a. Easy (1 - 50)
+b. Medium (1 - 100)
+c. Hard (1 - 500)
 Enter your guess:"""
 
 def generate_random_int(low, high):
     return random.randint(low, high)
+
+def get_difficulty_range(difficulty):
+    if difficulty == "a":
+        return 1, 50
+    elif difficulty == "b":
+        return 1, 100
+    elif difficulty == "c":
+        return 1, 500
+    else:
+        return None
 
 # initialize the socket object
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
