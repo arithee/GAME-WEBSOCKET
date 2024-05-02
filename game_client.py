@@ -29,7 +29,7 @@ def game():
             reply = s.recv(1024).decode().strip()
             print(reply)
 
-            if "Correct" in reply:
+            if "Correct" in reply: # 1st Feature (Client can play again without reconnecting or restarting the program)
                 play_again = input("Do you want to play again? (Y/N): ").strip().upper()
                 s.sendall(play_again.encode())
                 if play_again != "Y":
