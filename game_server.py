@@ -50,7 +50,7 @@ def load_leaderboard():
 def display_leaderboard():
     print("\n== Guessing Game Leaderboard ==")
     for name, score in sorted(leaderboard.items(), key=lambda x: x[1]):
-        print(f"{name}: {score} guesses")
+        print(f"{name}: {score} guesses ")
 
 load_leaderboard()
 
@@ -92,9 +92,8 @@ while True:
             update_leaderboard(name, tries)
             conn.sendall(b"Correct Answer!")
             play_again = conn.recv(1024).decode().strip().lower()
-            if play_again != "yes":
+            if play_again != "yes":   # 1st Feature (Client can play again without reconnecting or restarting the program)
                 save_leaderboard()
-                conn.sendall(b"Goodbye!")
                 conn.close()
                 display_leaderboard()
                 break
