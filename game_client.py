@@ -14,25 +14,29 @@ def game():
         print(data.decode().strip())
 
         # Get difficulty choice from the user
-        difficulty_choice = input("Enter your choice (a/b/c): ").strip().lower()
+        difficulty_choice = input("\nEnter your choice (A/B/C): ").strip().upper()
         s.sendall(difficulty_choice.encode())
 
+        # name from user {sends to server so txt file updates}
+        name = input("Enter your name: ").strip()
+        s.sendall(name.encode())
+
         while True:
-            # Get user input
-            user_input = input("Enter your guess:").strip()
+            # get user input
+            user_input = input("Enter your guess: ").strip()
 
             s.sendall(user_input.encode())
             reply = s.recv(1024).decode().strip()
             print(reply)
 
             if "Correct" in reply:
-                play_again = input("Do you want to play again? (yes/no): ").strip().lower()
+                play_again = input("Do you want to play again? (Y/N): ").strip().upper()
                 s.sendall(play_again.encode())
-                if play_again != "yes":
+                if play_again != "Y":
                     s.close()
                     return
                 else:
-                    break  # Break out of the inner loop if the guess is correct
+                    break
             elif "Goodbye" in reply:
                 s.close()
                 return
